@@ -1,7 +1,8 @@
 from flask import request, jsonify
-from callhome import app
-from callhome import auth
+from flask import g
+from callhome import app, auth, db_connect
 from callhome import version
+import pymysql
 
 
 @app.route('/', defaults={'path': ''})
@@ -19,5 +20,27 @@ def info():
 @app.route('/settings', methods=['GET'])
 @auth.login_required
 def req_settings():
-    return jsonify({"foo": "bar"}), 200
+    conn = db_connect()
+    curr = conn.cursor(pymysql.cursors.DictCursor)
+
+    sql = """
+          SELECT *
+            FROM `clients`
+           WHERE `username` = '{}'
+    """.format(g.username)
+    curr.execute(sql)
+    user_data = curr.fetchall()
+
+    if len(user_data) == 1:
+        return jsonify({
+            "id": user_data[0]['id'],
+            "username": g.username,
+            "ip": user_data[0]['host_ip'],
+            "description": user_data[0]['host_description'],
+            "location": user_data[0]['location'],
+            "preshared": user_data[0]['preshared'],
+            "last_change": user_data[0]['last_change']
+        }), 200
+    else:
+        return jsonify({"Error": "Something went wrong"}), 500
 
