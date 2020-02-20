@@ -1,0 +1,10 @@
+[Unit]
+Description=WebApp Callhome-server
+ 
+[Service]
+ExecStart=/usr/local/bin/python3.7 /root/WebApp/callhome-server/callhome-server
+Restart=on-failure
+ 
+[Install]
+WantedBy=multi-user.target
+Alias=logparser.service
