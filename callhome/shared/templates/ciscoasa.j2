@@ -1,0 +1,8 @@
+show run crypto map
+show run tunnel-group
+crypto map outside_map {{ crypto_map_id }} set peer {{ new_ip_address }}
+no crypto map outside_map {{ crypto_map_id }} set peer {{ old_ip_address }}
+tunnel-group {{ new_ip_address }} type ipsec-l2l
+tunnel-group {{ new_ip_address }} ipsec-attributes
+ ikev1 pre-shared-key {{ preshared_key }}
+clear config tunnel-group {{ old_ip_address }}
