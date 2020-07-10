@@ -1,8 +1,0 @@
-#!/usr/local/bin/python3.7
-from callhome import app
-import config
-
-
-if __name__ == '__main__':
-    app.run(host=config.APP_LISTENER, port=config.APP_PORT, ssl_context=(config.SERVER_CERT, config.SERVER_KEY))
-
