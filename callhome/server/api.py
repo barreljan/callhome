@@ -3,7 +3,7 @@ import pymysql
 from flask import g
 from flask import request, jsonify, Flask
 from flask_httpauth import HTTPBasicAuth
-from callhome.server import conn, curr, log
+from callhome.server import conn, curr, log, verify_pwd
 from callhome.shared import version
 
 # Initialize the app

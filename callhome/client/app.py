@@ -2,7 +2,6 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 from callhome import config
-from callhome.server import error
 
 
 class CallHomeClient(object):
@@ -13,10 +12,10 @@ class CallHomeClient(object):
     the site it requests for.
 
     Functions to call:
+        - callhome (gathers information and setting up shop)
         - get_current_ip (ret: str)
         - get_config_ip (ret: str)
         - ip_is_changed (ret: bool)
-        - run (automated process)
     """
 
     def __init__(self):
@@ -31,10 +30,14 @@ class CallHomeClient(object):
         self.p = config['CLIENT']['PASSWORD']
         self.current_ip = '0.0.0.0'
         self.config_ip = '0.0.0.0'
+        self.api_data = None
+        self.vpn_data = None
         self.headers = {
             'Accept': 'application/json'
         }
 
+    def callhome(self):
+        print("Calling home...\n")
         try:
             response = requests.get(self.url, headers=self.headers, verify=False, auth=HTTPBasicAuth(self.u, self.p))
         except requests.exceptions.Timeout:
@@ -74,8 +77,3 @@ class CallHomeClient(object):
             return True
         else:
             return False
-
-    def run(self):
-        # FIXME: This should be the automated part where it all comes together
-        if self.ip_is_changed():
-            print("going to fix it in a jiffy")

@@ -1,5 +1,5 @@
-from callhome.client import app as application
-from callhome.shared.workers.cisco import cisco_asa
+from callhome.client import client as application
+from callhome.shared.workers.cisco import CiscoAsa
 
 """
 CallHome Client
@@ -19,9 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-
 if __name__ == '__main__':
-    app = application.CallHomeClient()
-    if app.ip_is_changed():
-        print("ip is changed\n")
-        cisco_asa(app.vpn_data)
+    client = application.CallHomeClient()
+    client.callhome()
+    if client.ip_is_changed():
+        print(f"IP is changed: curr {client.get_current_ip()} vs config {client.get_config_ip()}\n")
+        local_device = CiscoAsa(peer_data=client.vpn_data, change=True)

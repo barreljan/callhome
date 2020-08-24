@@ -1,11 +1,16 @@
 import pymysql
 from werkzeug.security import check_password_hash
-from callhome import config
+from callhome import config, config_file
+import os
 
-dbhost = config['DATABASE']['HOST']
-dbuser = config['DATABASE']['USER']
-dbpasswd = config['DATABASE']['PASS']
-database = config['DATABASE']['DB']
+try:
+    dbhost = config['DATABASE']['HOST']
+    dbuser = config['DATABASE']['USER']
+    dbpasswd = config['DATABASE']['PASS']
+    database = config['DATABASE']['DB']
+except KeyError:
+    raise SystemExit(f"wrong ini: {config_file}, workdir {os.path.dirname(__file__)}")
+
 try:
     conn = pymysql.connect(host=dbhost, user=dbuser, passwd=dbpasswd, db=database)
 except pymysql.Error:

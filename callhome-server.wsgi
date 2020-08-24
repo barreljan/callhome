@@ -1,10 +1,8 @@
-#!/usr/bin/env python3.7
-
 import logging
 import sys
-sys.path.insert(0, '/var/www/html/callhome/server')
-sys.path.insert(0, '/var/www/html/callhome/server')
-sys.path.insert(0, '/var/www/html/callhome/venv/lib/python3.7/site-packages')
+sys.path.insert(0, '/var/www/html/callhome')
+sys.path.insert(1, '/var/www/html/callhome/server')
+sys.path.insert(2, '/var/www/html/callhome/lib/python3.7/site-packages')
 logging.basicConfig(stream=sys.stderr)
 
 """
